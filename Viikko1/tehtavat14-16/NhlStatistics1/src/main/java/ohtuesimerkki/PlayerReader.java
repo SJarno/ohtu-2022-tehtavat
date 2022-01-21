@@ -5,33 +5,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PlayerReader {
+public class PlayerReader implements Reader {
 
     private Scanner scanner;
 
     public PlayerReader(String pageUrl) {
         try {
+            /* Luetaan urlin tiedot muistiin */
             URL url = new URL(pageUrl);
             scanner = new Scanner(url.openStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    /* Listaa pelaajat */
     public List<Player> getPlayers() {
         ArrayList<Player> players = new ArrayList<Player>();
 
         while (scanner.hasNextLine()) {
-            String[] parts =  scanner.nextLine().split(";");            
-            
+            String[] parts = scanner.nextLine().split(";");
+
             if (parts.length > 3) {
-                players.add(new Player(parts[0].trim(), parts[1], extractInt(parts[3]), extractInt(parts[4])));
+                players.add(new Player(
+                        parts[0].trim(), 
+                        parts[1],
+                        extractInt(parts[3]),
+                        extractInt(parts[4])));
             }
         }
 
         return players;
     }
-
+    /* Palauttaa integer muodossa ja trimmattuna */
     private int extractInt(String str) {
         return Integer.parseInt(str.trim());
     }

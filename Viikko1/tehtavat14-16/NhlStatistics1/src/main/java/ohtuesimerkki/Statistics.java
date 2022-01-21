@@ -8,10 +8,11 @@ import java.util.List;
 public class Statistics {
 
     private List<Player> players;
+    private Reader reader;
 
-    public Statistics() {
-        PlayerReader reader = new PlayerReader("https://nhlstatisticsforohtu.herokuapp.com/players.txt");
-        players = reader.getPlayers();       
+    public Statistics(Reader reader) {
+        this.reader = reader;
+        this.players = this.reader.getPlayers();       
     }
 
     public Player search(String name) {
@@ -35,13 +36,14 @@ public class Statistics {
         
         return playersOfTeam;
     }
-
+    /* Haetaan n-määrä pelaajia */
     public List<Player> topScorers(int howMany) {
         Collections.sort(players);
         ArrayList<Player> topScorers = new ArrayList<Player>();
         Iterator<Player> playerIterator = players.iterator();
         
-        while (howMany>=0) {
+        /* Tämä korjattiin, jos haetaan yksi(1) pelaaja, pitäisi listassa myös mielestäni olla yksi */
+        while (howMany>0) {
             topScorers.add( playerIterator.next() );            
             howMany--;
         }
